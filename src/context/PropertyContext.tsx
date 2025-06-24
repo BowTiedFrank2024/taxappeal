@@ -13,6 +13,10 @@ interface PropertyData {
   yearBuilt: number;
   lastSalePrice: number;
   lastSaleDate: string;
+  hasRealAssessmentData: boolean;
+  hasRealBuildingData: boolean;
+  hasRealSaleData: boolean;
+  dataQuality: 'excellent' | 'good' | 'fair' | 'poor';
 }
 
 interface AssessmentData {

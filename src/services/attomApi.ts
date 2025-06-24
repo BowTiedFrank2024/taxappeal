@@ -207,11 +207,6 @@ class AttomApiService {
         format: 'json'
       });
 
-      // Add optional parameters for better results
-      if (zipCode) {
-        params.append('postalcode', zipCode);
-      }
-
       console.log('Making API request to:', `${searchUrl}?${params}`);
 
       const response = await fetch(`${searchUrl}?${params}`, {
@@ -241,10 +236,10 @@ class AttomApiService {
           return data;
         } else if (response.status === 401) {
           throw new Error('Invalid API key. Please check your VITE_ATTOM_API_KEY configuration.');
-        } else if (response.status === 429) {
-          throw new Error('API rate limit exceeded. Please try again in a few minutes.');
         } else if (response.status === 403) {
           throw new Error('API access denied. Please check your API key permissions.');
+        } else if (response.status === 429) {
+          throw new Error('API rate limit exceeded. Please try again in a few minutes.');
         } else {
           throw new Error(`API Error: ${response.status} - ${response.statusText}\nResponse: ${responseText}`);
         }

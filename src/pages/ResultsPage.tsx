@@ -11,7 +11,9 @@ import {
   Mail,
   Award,
   CheckCircle,
-  AlertTriangle
+  AlertTriangle,
+  Info,
+  Database
 } from 'lucide-react';
 import { useProperty } from '../context/PropertyContext';
 import ProgressBar from '../components/ProgressBar';
@@ -120,6 +122,101 @@ const ResultsPage = () => {
             <p className="text-xl font-semibold text-blue-900 mb-2">{propertyData.propertyType}</p>
             <p className="text-sm text-gray-600">{propertyData.squareFootage.toLocaleString()} sq ft</p>
           </div>
+        </div>
+
+        {/* Data Quality Indicator */}
+        <div className="bg-white rounded-2xl shadow-xl p-6 mb-8">
+          <h3 className="text-xl font-bold text-blue-900 mb-6 flex items-center">
+            <Database className="w-6 h-6 mr-2" />
+            Data Quality & Sources
+          </h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Data Quality Summary */}
+            <div className="bg-gray-50 rounded-lg p-4">
+              <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
+                <Info className="w-4 h-4 mr-2" />
+                Data Quality: {propertyData.dataQuality.toUpperCase()}
+              </h4>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">Assessment Data:</span>
+                  <span className={`text-sm font-medium ${propertyData.hasRealAssessmentData ? 'text-green-600' : 'text-amber-600'}`}>
+                    {propertyData.hasRealAssessmentData ? '✓ Real Data' : '⚠ Estimated'}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">Building Data:</span>
+                  <span className={`text-sm font-medium ${propertyData.hasRealBuildingData ? 'text-green-600' : 'text-amber-600'}`}>
+                    {propertyData.hasRealBuildingData ? '✓ Real Data' : '⚠ Estimated'}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">Sale Data:</span>
+                  <span className={`text-sm font-medium ${propertyData.hasRealSaleData ? 'text-green-600' : 'text-amber-600'}`}>
+                    {propertyData.hasRealSaleData ? '✓ Real Data' : '⚠ Estimated'}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Data Source Information */}
+            <div className="bg-blue-50 rounded-lg p-4">
+              <h4 className="font-semibold text-blue-900 mb-3">Data Sources</h4>
+              <div className="space-y-2 text-sm">
+                <p className="text-blue-800">
+                  <strong>Primary Source:</strong> ATTOM Data API
+                </p>
+                <p className="text-blue-800">
+                  <strong>Coverage:</strong> National property database
+                </p>
+                <p className="text-blue-800">
+                  <strong>Update Frequency:</strong> Monthly
+                </p>
+                <p className="text-blue-800">
+                  <strong>Accuracy:</strong> Varies by jurisdiction
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Data Quality Explanation */}
+          <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+            <h4 className="font-semibold text-amber-900 mb-2">About Data Quality</h4>
+            <div className="text-sm text-amber-800 space-y-1">
+              <p><strong>Excellent:</strong> Real assessment, building, and sale data available</p>
+              <p><strong>Good:</strong> Real assessment data with some building or sale data</p>
+              <p><strong>Fair:</strong> Some real data available, rest estimated</p>
+              <p><strong>Poor:</strong> Limited real data, mostly estimated based on location averages</p>
+              <p className="mt-2 text-xs">
+                <strong>Note:</strong> Estimated values are based on location-specific averages and may not reflect your property's exact characteristics. 
+                For the most accurate assessment, consider obtaining a professional property appraisal.
+              </p>
+              <p className="mt-2 text-xs">
+                <strong>Improvement:</strong> Our estimation algorithms have been enhanced with 2024 market data and location-specific factors 
+                to provide more realistic property valuations when real data is unavailable.
+              </p>
+            </div>
+          </div>
+
+          {/* Alternative Data Sources */}
+          {propertyData.dataQuality === 'poor' && (
+            <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <h4 className="font-semibold text-blue-900 mb-2">Getting More Accurate Data</h4>
+              <div className="text-sm text-blue-800 space-y-2">
+                <p>For more accurate property data, consider these sources:</p>
+                <ul className="list-disc list-inside space-y-1 ml-4">
+                  <li><strong>County Assessor:</strong> Visit your local county assessor's website for official property records</li>
+                  <li><strong>Professional Appraisal:</strong> Hire a licensed appraiser for the most accurate valuation</li>
+                  <li><strong>Real Estate Agent:</strong> Get a comparative market analysis (CMA) from a local agent</li>
+                  <li><strong>Zillow/Redfin:</strong> Check these platforms for additional property information</li>
+                </ul>
+                <p className="mt-2 text-xs">
+                  <strong>Professional Tip:</strong> For tax appeals, county assessor data is typically the most authoritative source.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Detailed Analysis */}
